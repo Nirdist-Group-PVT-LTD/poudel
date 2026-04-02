@@ -4,83 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="NIRDIST.gif">
-    <title>Poudel | Nirdist</title>
+    <title>Nirdist Poudel | Portfolio</title>
     <style>
-        /* Modern Reset & Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
+        :root {
+            --bg-color: #050505;
+            --card-bg: #111;
+            --accent-color: #3498db;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-            padding: 20px;
-            background-color: #0a0a0a; /* Deep black */
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* Container for the images */
-        .gallery-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            width: 100%;
-            max-width: 1200px; /* Keeps it from getting too wide on huge monitors */
+        /* Glassmorphism Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1.5rem;
+            text-align: center;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #222;
         }
 
-        /* Image Styling */
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            background-color: #1a1a1a;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        /* Hover effect to make it feel interactive */
-        .gallery-item:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            z-index: 10;
-        }
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures images fill the square without stretching */
-            display: block;
-            loading: lazy; /* Improves performance by loading as you scroll */
-        }
-
-        /* Title for aesthetics */
-        h1 {
-            color: white;
-            margin-bottom: 20px;
-            font-weight: 300;
-            letter-spacing: 2px;
+        header h1 {
+            font-size: 1.5rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
+            background: linear-gradient(to right, #fff, #666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        /* Main Responsive Grid */
+        .main-container {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        /* Card Styling */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #222;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #444;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(20%);
+            transition: filter 0.3s ease;
+        }
+
+        .card:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* Caption Styling */
+        .card-info {
+            padding: 15px;
+            background: var(--card-bg);
+        }
+
+        .card-info span {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+            margin-top: 50px;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Nirdist Poudel</h1>
+    <header>
+        <h1>Poudel</h1>
+    </header>
 
-    <div class="gallery-container">
-        <div class="gallery-item"><img src="NIRDIST.png" alt="Nirdist Poudel"></div>
-        <div class="gallery-item"><img src="NIRDIST.gif" alt="Nirdist Poudel"></div>
-        <div class="gallery-item"><img src="so.gif" alt="Nirdist Poudel"></div>
-        <div class="gallery-item"><img src="go3.gif" alt="Nirdist Poudel"></div>
-        <div class="gallery-item"><img src="go2.gif" alt="Nirdist Poudel"></div>
-        <div class="gallery-item"><img src="ar.png" alt="Nirdist Poudel"></div>
-        
-        <div class="gallery-item"><img src="NIRDIST.gif" alt="Nirdist Poudel"></div>
-        <div class="gallery-item"><img src="NIRDIST.png" alt="Nirdist Poudel"></div>
-        <div class="gallery-item"><img src="NIRDIST.gif" alt="Nirdist Poudel"></div>
-        <div class="gallery-item"><img src="NIRDIST.png" alt="Nirdist Poudel"></div>
-    </div>
+    <section class="hero">
+        <p>Visual Gallery & Creative Showcase</p>
+    </section>
+
+    <main class="main-container">
+        <div class="card">
+            <img src="NIRDIST.png" alt="Nirdist App Showcase" loading="lazy">
+            <div class="card-info">
+                <span>Featured Project</span>
+                <p>Nirdist App Interface</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="NIRDIST.gif" alt="Animated UI" loading="lazy">
+            <div class="card-info">
+                <span>Animation</span>
+                <p>Core System Interaction</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="so.gif" alt="Visual Asset" loading="lazy">
+            <div class="card-info">
+                <span>Asset</span>
+                <p>Dynamic Element 01</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="go3.gif" alt="Visual Asset" loading="lazy">
+            <div class="card-info">
+                <span>Asset</span>
+                <p>Dynamic Element 02</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="ar.png" alt="Collaborative View" loading="lazy">
+            <div class="card-info">
+                <span>View</span>
+                <p>Perspective Module</p>
+            </div>
+        </div>
+
+        </main>
+
+    <footer>
+        <p>&copy; 2026 Nirdist Poudel. Built with Precision.</p>
+    </footer>
 
 </body>
 </html>
