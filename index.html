@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/png" href="NIRDIST.gif">
-    <title>Nirdist | Interactive</title>
+    <title>Nirdist | Pro Social</title>
     <style>
         :root {
             --bg: #000000;
@@ -25,6 +25,7 @@
             font-family: -apple-system, sans-serif;
             display: flex;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* --- SIDEBAR --- */
@@ -41,7 +42,7 @@
             z-index: 1000;
         }
 
-        .logo-area { font-size: 1.5rem; font-weight: 800; padding: 0 12px 30px; letter-spacing: -1px; cursor: pointer; }
+        .logo-area { font-size: 1.5rem; font-weight: 800; padding: 0 12px 30px; cursor: pointer; }
 
         .nav-item {
             display: flex; align-items: center; gap: 16px;
@@ -71,8 +72,7 @@
         .stories-container { display: flex; gap: 15px; padding: 10px 0; overflow-x: auto; margin-bottom: 24px; scrollbar-width: none; }
         .stories-container::-webkit-scrollbar { display: none; }
 
-        .story-node { cursor: pointer; text-align: center; min-width: 75px; transition: transform 0.2s; }
-        .story-node:active { transform: scale(0.9); }
+        .story-node { cursor: pointer; text-align: center; min-width: 75px; }
         .ring {
             width: 66px; height: 66px; border-radius: 50%;
             background: linear-gradient(45deg, #f09433, #dc2743, #cc2366);
@@ -84,10 +84,9 @@
         .post { border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px; }
         .post-header { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
         .post-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-        .post-img { width: 100%; border-radius: 4px; cursor: pointer; transition: opacity 0.2s; }
+        .post-img { width: 100%; border-radius: 4px; cursor: pointer; }
         .post-actions { padding: 12px 0; font-size: 1.5rem; display:flex; gap:15px; }
-        .action-icon { cursor: pointer; transition: 0.1s; }
-        .action-icon:active { transform: scale(1.2); }
+        .action-icon { cursor: pointer; }
         .liked { color: #ed4956; }
 
         /* --- STORY OVERLAY --- */
@@ -97,17 +96,15 @@
             background: #000; z-index: 2000;
             flex-direction: column; align-items: center; justify-content: center;
         }
-        .story-timer-bar { position: absolute; top: 15px; left: 10px; right: 10px; height: 2px; background: #333; display: flex; gap: 4px; }
-        .t-segment { flex: 1; height: 100%; background: #555; border-radius: 2px; overflow: hidden; }
+        .story-timer-bar { position: absolute; top: 15px; left: 10px; right: 10px; height: 2px; display: flex; gap: 4px; z-index: 2010;}
+        .t-segment { flex: 1; height: 100%; background: #333; border-radius: 2px; overflow: hidden; }
         .t-progress { height: 100%; width: 0%; background: white; }
 
-        .story-nav-btn {
-            position: absolute; width: 30%; height: 80%; z-index: 2001; cursor: pointer;
-        }
+        .story-nav-btn { position: absolute; width: 50%; height: 100%; z-index: 2001; cursor: pointer; top: 0; }
         .nav-prev { left: 0; }
         .nav-next { right: 0; }
 
-        .story-img-full { max-height: 80vh; max-width: 100vw; border-radius: 8px; }
+        .story-img-full { max-height: 80vh; max-width: 100vw; border-radius: 8px; position: relative; z-index: 2000; }
 
         /* Mobile Nav */
         .mobile-nav {
@@ -121,13 +118,13 @@
 <body>
 
     <nav class="sidebar">
-        <div class="logo-area" onclick="location.reload()"><span>NIRDIST</span></div>
-        <div class="nav-item active" onclick="setActive(this)"><i>🏠</i><span>Home</span></div>
-        <div class="nav-item" onclick="setActive(this)"><i>🔍</i><span>Search</span></div>
-        <div class="nav-item" onclick="setActive(this)"><i>🧭</i><span>Explore</span></div>
-        <div class="nav-item" onclick="alert('No new messages')"><i>📩</i><span>Messages</span></div>
-        <div class="nav-item" onclick="setActive(this)"><i>👤</i><span>Profile</span></div>
-        <div style="margin-top: auto;" class="nav-item" onclick="alert('Settings Opended')"><i>⚙️</i><span>Settings</span></div>
+        <div class="logo-area" onclick="window.location.reload()"><span>NIRDIST</span></div>
+        <div class="nav-item active" onclick="handleNav(this, 'Home')"><i>🏠</i><span>Home</span></div>
+        <div class="nav-item" onclick="handleNav(this, 'Search')"><i>🔍</i><span>Search</span></div>
+        <div class="nav-item" onclick="handleNav(this, 'Explore')"><i>🧭</i><span>Explore</span></div>
+        <div class="nav-item" onclick="handleNav(this, 'Messages')"><i>📩</i><span>Messages</span></div>
+        <div class="nav-item" onclick="handleNav(this, 'Profile')"><i>👤</i><span>Profile</span></div>
+        <div style="margin-top: auto;" class="nav-item" onclick="handleNav(this, 'Settings')"><i>⚙️</i><span>Settings</span></div>
     </nav>
 
     <main>
@@ -138,24 +135,23 @@
     </main>
 
     <div class="mobile-nav">
-        <span onclick="setActive(this)">🏠</span>
-        <span onclick="setActive(this)">🔍</span>
-        <span onclick="alert('Post Camera Open')">➕</span>
-        <span onclick="setActive(this)">👤</span>
+        <span onclick="handleNav(this, 'Home')">🏠</span>
+        <span onclick="handleNav(this, 'Search')">🔍</span>
+        <span onclick="alert('Open Camera')">➕</span>
+        <span onclick="handleNav(this, 'Profile')">👤</span>
     </div>
 
     <div id="storyOverlay">
         <div class="story-timer-bar" id="timerBar"></div>
-        
         <div class="story-nav-btn nav-prev" onclick="prevStory()"></div>
         <div class="story-nav-btn nav-next" onclick="nextStory()"></div>
 
-        <div style="position:absolute; top:30px; left:20px; display:flex; align-items:center; gap:10px;">
-            <img src="" id="storyAvatar" style="width:32px; height:32px; border-radius:50%;">
+        <div style="position:absolute; top:35px; left:20px; display:flex; align-items:center; gap:10px; z-index:2020;">
+            <img src="" id="storyAvatar" style="width:32px; height:32px; border-radius:50%; border: 1px solid #444;">
             <b id="storyUser"></b>
         </div>
         
-        <span style="position:absolute; top:30px; right:20px; cursor:pointer; font-size:2rem; z-index:2005;" onclick="closeStory()">×</span>
+        <span style="position:absolute; top:30px; right:20px; cursor:pointer; font-size:2.5rem; z-index:2030; color: white;" onclick="closeStory()">&times;</span>
         <img src="" id="activeStoryImg" class="story-img-full">
     </div>
 
@@ -168,15 +164,15 @@
                 { name: 'nirdist_bot', img: 'so.gif', story: 'so.gif' }
             ],
             posts: [
-                { id: 1, user: 'nirdist_poudel', avatar: 'NIRDIST.gif', img: 'NIRDIST.png', caption: 'Deep learning the BIT curriculum.', likes: 2401 },
-                { id: 2, user: 'arbind_dev', avatar: 'ar.png', img: 'ar.png', caption: 'Designing networks in Kathmandu.', likes: 1100 },
-                { id: 3, user: 'nirdist_poudel', avatar: 'NIRDIST.gif', img: 'so.gif', caption: 'Ubuntu customization is key.', likes: 850 }
+                { id: 101, user: 'nirdist_poudel', avatar: 'NIRDIST.gif', img: 'NIRDIST.png', caption: 'BIT 7th Sem Project in progress.', likes: 2401 },
+                { id: 102, user: 'arbind_dev', avatar: 'ar.png', img: 'ar.png', caption: 'Networking lab was intense today.', likes: 1100 },
+                { id: 103, user: 'nirdist_poudel', avatar: 'NIRDIST.gif', img: 'so.gif', caption: 'Ubuntu 24.04 looking sharp.', likes: 850 }
             ]
         };
 
-        // --- FEED RENDER ---
-        const feedContainer = document.getElementById('feedList');
-        feedContainer.innerHTML = appData.posts.map(p => `
+        // --- RENDER FEED ---
+        const feed = document.getElementById('feedList');
+        feed.innerHTML = appData.posts.map(p => `
             <div class="post">
                 <div class="post-header">
                     <img src="${p.avatar}" class="post-avatar">
@@ -185,8 +181,7 @@
                 <img src="${p.img}" class="post-img" ondblclick="likePost(${p.id})">
                 <div class="post-actions">
                     <span class="action-icon" id="heart-${p.id}" onclick="likePost(${p.id})">🤍</span>
-                    <span class="action-icon">💬</span>
-                    <span class="action-icon">✈️</span>
+                    <span onclick="alert('Comments coming soon')">💬</span>
                 </div>
                 <div style="font-size: 0.9rem;">
                     <b id="count-${p.id}">${p.likes.toLocaleString()} likes</b><br>
@@ -195,99 +190,101 @@
             </div>
         `).join('');
 
-        // --- STORIES RENDER ---
-        const storyContainer = document.getElementById('storyList');
-        storyContainer.innerHTML = appData.users.map((u, index) => `
-            <div class="story-node" onclick="startStoryFlow(${index})">
+        // --- RENDER STORIES ---
+        const stories = document.getElementById('storyList');
+        stories.innerHTML = appData.users.map((u, i) => `
+            <div class="story-node" onclick="openStoryFlow(${i})">
                 <div class="ring"><img src="${u.img}"></div>
                 <p style="font-size:0.7rem; color:var(--text-dim)">${u.name}</p>
             </div>
         `).join('');
 
         // --- STORY ENGINE ---
-        let currentStoryIdx = 0;
-        let storyTimer;
+        let currentIdx = 0;
+        let storyInt;
         let progress = 0;
 
-        function startStoryFlow(index) {
-            currentStoryIdx = index;
+        function openStoryFlow(index) {
+            currentIdx = index;
+            progress = 0;
             document.getElementById('storyOverlay').style.display = 'flex';
-            renderTimerSegments();
-            showStory();
+            document.body.style.overflow = 'hidden';
+            buildTimerBars();
+            loadStory();
         }
 
-        function renderTimerSegments() {
-            const tBar = document.getElementById('timerBar');
-            tBar.innerHTML = appData.users.map((_, i) => `
+        function buildTimerBars() {
+            const bar = document.getElementById('timerBar');
+            bar.innerHTML = appData.users.map((_, i) => `
                 <div class="t-segment">
-                    <div class="t-progress" id="p-${i}" style="width: ${i < currentStoryIdx ? '100%' : '0%'}"></div>
+                    <div class="t-progress" id="p-${i}" style="width: ${i < currentIdx ? '100%' : '0%'}"></div>
                 </div>
-            `).広告join('');
+            `).join('');
         }
 
-        function showStory() {
-            const user = appData.users[currentStoryIdx];
+        function loadStory() {
+            const user = appData.users[currentIdx];
             document.getElementById('activeStoryImg').src = user.story;
             document.getElementById('storyAvatar').src = user.img;
             document.getElementById('storyUser').innerText = user.name;
-            
-            resetTimer();
+            startTimer();
         }
 
-        function resetTimer() {
-            clearInterval(storyTimer);
+        function startTimer() {
+            clearInterval(storyInt);
             progress = 0;
-            const pElem = document.getElementById(`p-${currentStoryIdx}`);
-            
-            storyTimer = setInterval(() => {
+            storyInt = setInterval(() => {
                 progress += 1;
-                pElem.style.width = progress + '%';
+                document.getElementById(`p-${currentIdx}`).style.width = progress + '%';
                 if (progress >= 100) nextStory();
-            }, 40); 
+            }, 50); 
         }
 
         function nextStory() {
-            if (currentStoryIdx < appData.users.length - 1) {
-                document.getElementById(`p-${currentStoryIdx}`).style.width = '100%';
-                currentStoryIdx++;
-                showStory();
+            if (currentIdx < appData.users.length - 1) {
+                document.getElementById(`p-${currentIdx}`).style.width = '100%';
+                currentIdx++;
+                loadStory();
             } else {
                 closeStory();
             }
         }
 
         function prevStory() {
-            if (currentStoryIdx > 0) {
-                document.getElementById(`p-${currentStoryIdx}`).style.width = '0%';
-                currentStoryIdx--;
-                showStory();
+            if (currentIdx > 0) {
+                document.getElementById(`p-${currentIdx}`).style.width = '0%';
+                currentIdx--;
+                loadStory();
             }
         }
 
         function closeStory() {
             document.getElementById('storyOverlay').style.display = 'none';
-            clearInterval(storyTimer);
+            document.body.style.overflow = 'auto';
+            clearInterval(storyInt);
         }
 
-        // --- UTILS ---
-        function setActive(el) {
+        // --- INTERACTION UTILS ---
+        function handleNav(el, name) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
+            console.log("Navigated to: " + name);
+            // In a real app, you would swap screens here
         }
 
         function likePost(id) {
-            const heart = document.getElementById(`heart-${id}`);
-            const countBox = document.getElementById(`count-${id}`);
-            if (!heart.classList.contains('liked')) {
-                heart.innerHTML = '❤️';
-                heart.classList.add('liked');
-                let val = parseInt(countBox.innerText.replace(/,/g, '')) + 1;
-                countBox.innerText = val.toLocaleString() + " likes";
+            const h = document.getElementById(`heart-${id}`);
+            const c = document.getElementById(`count-${id}`);
+            let val = parseInt(c.innerText.replace(/,/g, ''));
+            
+            if (!h.classList.contains('liked')) {
+                h.innerHTML = '❤️';
+                h.classList.add('liked');
+                c.innerText = (val + 1).toLocaleString() + " likes";
             } else {
-                heart.innerHTML = '🤍';
-                heart.classList.remove('liked');
-                let val = parseInt(countBox.innerText.replace(/,/g, '')) - 1;
-                countBox.innerText = val.toLocaleString() + " likes";
+                h.innerHTML = '🤍';
+                h.classList.remove('liked');
+                c.innerText = (val - 1).toLocaleString() + " likes";
             }
         }
     </script>
