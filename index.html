@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/png" href="NIRDIST.gif">
-    <title>Nirdist | Experience</title>
+    <title>Nirdist | Pro Social</title>
     <style>
         :root {
             --bg: #000000;
@@ -13,417 +13,254 @@
             --text: #ffffff;
             --text-dim: #8e8e8e;
             --accent: #0095f6;
-            --danger: #ed4956;
-            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --nav-width: 245px;
+            --nav-collapsed: 75px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: var(--font-main);
-            overflow-x: hidden;
+            font-family: -apple-system, sans-serif;
             display: flex;
-            justify-content: center;
+            min-height: 100vh;
         }
 
-        /* --- Layout Structures --- */
-        .app-container {
-            display: flex;
-            width: 100%;
-            max-width: 935px;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        /* Desktop Sidebar (Hidden on Mobile) */
+        /* --- ADVANCED SIDEBAR (PC) --- */
         .sidebar {
-            width: 240px;
+            width: var(--nav-width);
             height: 100vh;
-            position: sticky;
+            position: fixed;
+            left: 0;
             top: 0;
-            padding: 20px;
             border-right: 1px solid var(--border);
+            padding: 25px 12px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            transition: width 0.3s ease;
+            background: var(--bg);
+            z-index: 1000;
+        }
+
+        .logo-area {
+            font-size: 1.5rem;
+            font-weight: 800;
+            padding: 0 12px 30px;
+            letter-spacing: -1px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            margin: 4px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            font-size: 1rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-item:hover { background: rgba(255,255,255,0.1); }
+        .nav-item:active { transform: scale(0.96); }
+        .nav-item i { font-size: 1.4rem; width: 24px; text-align: center; }
+
+        /* Responsive Sidebar */
+        @media (max-width: 1260px) {
+            .sidebar { width: var(--nav-collapsed); }
+            .nav-item span, .logo-area span { display: none; }
         }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
-            .app-container { max-width: 100%; }
+            main { margin-left: 0 !important; }
         }
 
-        /* --- Feed Engine --- */
-        main.feed-engine {
-            width: 100%;
-            max-width: 470px;
-            padding: 20px 0 80px 0;
-        }
-
-        /* Stories System */
-        .stories-tray {
+        /* --- MAIN CONTENT AREA --- */
+        main {
+            margin-left: var(--nav-width);
+            flex: 1;
             display: flex;
-            gap: 12px;
-            padding: 10px 5px;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        @media (max-width: 1260px) { main { margin-left: var(--nav-collapsed); } }
+
+        .content-limit { width: 100%; max-width: 470px; }
+
+        /* --- STORY VIEWING SYSTEM --- */
+        .stories-container {
+            display: flex;
+            gap: 15px;
+            padding: 10px 0;
             overflow-x: auto;
-            scrollbar-width: none; /* Firefox */
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
-        .stories-tray::-webkit-scrollbar { display: none; }
+        .stories-container::-webkit-scrollbar { display: none; }
 
-        .story-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
+        .story-node {
             cursor: pointer;
+            text-align: center;
+            min-width: 75px;
         }
-
-        .story-ring {
-            width: 66px;
-            height: 66px;
+        .ring {
+            width: 66px; height: 66px;
             border-radius: 50%;
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 5px;
         }
-        .story-ring:active { transform: scale(0.9); }
+        .ring img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid black; object-fit: cover; }
 
-        .story-ring img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 2px solid black;
-            object-fit: cover;
-        }
-
-        .story-user {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            max-width: 70px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        /* Post Architecture */
-        .post-node {
-            width: 100%;
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 15px;
-        }
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-        }
-
-        .post-user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .avatar-sm {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid var(--border);
-        }
-
-        .username-link {
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .media-container {
-            width: 100%;
-            background: #050505;
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 400px;
-        }
-
-        .media-container img {
-            width: 100%;
-            max-height: 580px;
-            object-fit: contain;
-        }
-
-        /* Post Interactions */
-        .post-actions {
-            padding: 12px 10px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .action-group {
-            display: flex;
-            gap: 16px;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-        .icon-btn:active { transform: scale(1.2); }
-        .icon-btn.liked { color: var(--danger); }
-
-        .post-meta {
-            padding: 0 12px 15px 12px;
-            font-size: 0.9rem;
-        }
-
-        .likes-count { font-weight: 700; margin-bottom: 5px; display: block; }
-        .caption-text b { margin-right: 5px; }
-
-        /* --- Full View Modal --- */
-        #mediaModal {
+        /* Full Screen Story Overlay */
+        #storyOverlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
+            top:0; left:0; width: 100vw; height:100vh;
+            background: #1a1a1a;
+            z-index: 2000;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
-
-        .modal-content {
-            max-width: 90%;
-            max-height: 80vh;
+        .story-timer-bar {
+            position: absolute; top: 10px; left: 10px; right: 10px;
+            height: 2px; background: #555; border-radius: 2px;
         }
-
-        .modal-content img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        .story-progress {
+            height: 100%; width: 0%; background: white; border-radius: 2px;
         }
+        .story-img-full { max-height: 85vh; max-width: 95vw; border-radius: 12px; }
 
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 2rem;
-            cursor: pointer;
-        }
-
-        /* --- Navigation --- */
-        .bottom-nav {
+        /* --- POST STYLING --- */
+        .post { border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px; }
+        .post-img { width: 100%; border-radius: 4px; cursor: pointer; }
+        .post-header { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
+        .post-avatar { width: 32px; height: 32px; border-radius: 50%; }
+        
+        /* Mobile Bottom Nav */
+        .mobile-nav {
+            display: none;
             position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 50px;
-            background: var(--bg);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 999;
+            bottom: 0; width: 100%; height: 50px;
+            background: black; border-top: 1px solid var(--border);
+            justify-content: space-around; align-items: center; font-size: 1.5rem;
         }
-
-        /* --- Big Heart Animation --- */
-        .big-heart {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            font-size: 5rem;
-            color: white;
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .heart-animate {
-            animation: heartPop 0.8s ease-out;
-        }
-
-        @keyframes heartPop {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
-        }
+        @media (max-width: 768px) { .mobile-nav { display: flex; } }
 
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        
-        <aside class="sidebar">
-            <h2 style="font-size: 1.6rem; letter-spacing: -1px;">NIRDIST</h2>
-            <div class="username-link">🏠 Home</div>
-            <div class="username-link">🔍 Search</div>
-            <div class="username-link">🧭 Explore</div>
-            <div class="username-link">🎬 Reels</div>
-            <div class="username-link">✉️ Messages</div>
-            <div class="username-link">👤 Profile</div>
-        </aside>
-
-        <main class="feed-engine">
-            
-            <div class="stories-tray" id="storiesTray">
-                </div>
-
-            <div id="mainFeed">
-                </div>
-
-        </main>
-
-    </div>
-
-    <nav class="bottom-nav">
-        <span class="icon-btn">🏠</span>
-        <span class="icon-btn">🔍</span>
-        <span class="icon-btn">➕</span>
-        <span class="icon-btn">🎬</span>
-        <span class="icon-btn" onclick="alert('Profile of Nirdist')">👤</span>
+    <nav class="sidebar">
+        <div class="logo-area"><span>NIRDIST</span></div>
+        <div class="nav-item"><i>🏠</i><span>Home</span></div>
+        <div class="nav-item"><i>🔍</i><span>Search</span></div>
+        <div class="nav-item"><i>🧭</i><span>Explore</span></div>
+        <div class="nav-item"><i>📩</i><span>Messages</span></div>
+        <div class="nav-item"><i>👤</i><span>Profile</span></div>
+        <div style="margin-top: auto;" class="nav-item"><i>⚙️</i><span>Settings</span></div>
     </nav>
 
-    <div id="mediaModal">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <div class="modal-content">
-            <img id="modalImg" src="">
+    <main>
+        <div class="content-limit">
+            
+            <div class="stories-container" id="storyList">
+                </div>
+
+            <div id="feedList">
+                </div>
+
         </div>
+    </main>
+
+    <div class="mobile-nav">
+        <span>🏠</span><span>🔍</span><span>➕</span><span>👤</span>
+    </div>
+
+    <div id="storyOverlay">
+        <div class="story-timer-bar"><div class="story-progress" id="pBar"></div></div>
+        <span style="position:absolute; top:20px; right:20px; cursor:pointer; font-size:2rem;" onclick="closeStory()">×</span>
+        <img src="" id="activeStoryImg" class="story-img-full">
+        <p id="storyUser" style="position:absolute; top:25px; left:20px; font-weight:bold;"></p>
     </div>
 
     <script>
-        // --- DATA ENGINE ---
-        const postsData = [
-            { id: 1, user: 'nirdist_poudel', avatar: 'NIRDIST.gif', media: 'NIRDIST.png', likes: 1204, caption: 'Core logic built. System live. 🚀', time: '2h' },
-            { id: 2, user: 'nirdist_poudel', avatar: 'NIRDIST.gif', media: 'so.gif', likes: 890, caption: 'Visual dynamics in motion.', time: '5h' },
-            { id: 3, user: 'poudel_vibe', avatar: 'go2.gif', media: 'go3.gif', likes: 450, caption: 'Abstract testing phase 03.', time: '8h' },
-            { id: 4, user: 'arbind_dev', avatar: 'ar.png', media: 'NIRDIST.gif', likes: 2311, caption: 'This animation looks smooth! Good work.', time: '1d' }
-        ];
+        const appData = {
+            users: [
+                { name: 'nirdist_poudel', img: 'NIRDIST.gif' },
+                { name: 'arbind_dev', img: 'ar.png' },
+                { name: 'aishwarya', img: 'go2.gif' }
+            ],
+            posts: [
+                { user: 'nirdist_poudel', img: 'NIRDIST.png', caption: 'System overhaul complete.', likes: '2,401' },
+                { user: 'arbind_dev', img: 'ar.png', caption: 'BIT Project vibes.', likes: '1,100' },
+                { user: 'nirdist_poudel', img: 'so.gif', caption: 'Testing visuals.', likes: '850' }
+            ]
+        };
 
-        const storiesData = [
-            { user: 'Your Story', img: 'NIRDIST.gif' },
-            { user: 'arbind', img: 'ar.png' },
-            { user: 'aishwarya', img: 'go2.gif' },
-            { user: 'bit_lab', img: 'go3.gif' },
-            { user: 'linux_fan', img: 'so.gif' },
-            { user: 'nepal_dev', img: 'NIRDIST.png' }
-        ];
-
-        // --- RENDER ENGINES ---
-        function initApp() {
-            renderStories();
-            renderFeed();
-        }
-
-        function renderStories() {
-            const tray = document.getElementById('storiesTray');
-            tray.innerHTML = storiesData.map(s => `
-                <div class="story-item">
-                    <div class="story-ring"><img src="${s.img}"></div>
-                    <span class="story-user">${s.user}</span>
+        // Render Feed
+        const feedContainer = document.getElementById('feedList');
+        feedContainer.innerHTML = appData.posts.map(p => `
+            <div class="post">
+                <div class="post-header">
+                    <img src="NIRDIST.gif" class="post-avatar">
+                    <b>${p.user}</b>
                 </div>
-            `).join('');
-        }
+                <img src="${p.img}" class="post-img" ondblclick="alert('Liked!')">
+                <div style="padding: 10px 0; font-size: 1.4rem; display:flex; gap:15px;">
+                    <span>🤍</span><span>💬</span><span>✈️</span>
+                </div>
+                <div style="font-size: 0.9rem;">
+                    <b>${p.likes} likes</b><br>
+                    <b>${p.user}</b> ${p.caption}
+                </div>
+            </div>
+        `).join('');
 
-        function renderFeed() {
-            const feed = document.getElementById('mainFeed');
-            feed.innerHTML = postsData.map(post => `
-                <article class="post-node" id="post-${post.id}">
-                    <div class="post-header">
-                        <div class="post-user-info">
-                            <img src="${post.avatar}" class="avatar-sm">
-                            <span class="username-link">${post.user}</span>
-                        </div>
-                        <span>•••</span>
-                    </div>
-                    
-                    <div class="media-container" ondblclick="handleDoubleTap(${post.id})">
-                        <img src="${post.media}" onclick="openModal('${post.media}')" loading="lazy">
-                        <div class="big-heart" id="heart-${post.id}">❤️</div>
-                    </div>
+        // Render Stories
+        const storyContainer = document.getElementById('storyList');
+        storyContainer.innerHTML = appData.users.map(u => `
+            <div class="story-node" onclick="viewStory('${u.img}', '${u.name}')">
+                <div class="ring"><img src="${u.img}"></div>
+                <p style="font-size:0.7rem; color:var(--text-dim)">${u.name}</p>
+            </div>
+        `).join('');
 
-                    <div class="post-actions">
-                        <div class="action-group">
-                            <button class="icon-btn" onclick="toggleLike(this, ${post.id})">🤍</button>
-                            <button class="icon-btn">💬</button>
-                            <button class="icon-btn">✈️</button>
-                        </div>
-                        <button class="icon-btn">🔖</button>
-                    </div>
-
-                    <div class="post-meta">
-                        <span class="likes-count" id="likes-${post.id}">${post.likes} likes</span>
-                        <p class="caption-text"><b>${post.user}</b> ${post.caption}</p>
-                        <p style="color:var(--text-dim); font-size:0.7rem; margin-top:5px;">${post.time} AGO</p>
-                    </div>
-                </article>
-            `).join('');
-        }
-
-        // --- INTERACTIVE LOGIC ---
-
-        // Like System
-        function toggleLike(btn, id) {
-            const likesEl = document.getElementById(`likes-${id}`);
-            let currentLikes = parseInt(likesEl.innerText.replace(',', ''));
+        // Story Logic
+        let storyTimer;
+        function viewStory(img, name) {
+            const overlay = document.getElementById('storyOverlay');
+            const activeImg = document.getElementById('activeStoryImg');
+            const pBar = document.getElementById('pBar');
             
-            if (btn.classList.contains('liked')) {
-                btn.classList.remove('liked');
-                btn.innerText = '🤍';
-                likesEl.innerText = `${(currentLikes - 1).toLocaleString()} likes`;
-            } else {
-                btn.classList.add('liked');
-                btn.innerText = '❤️';
-                likesEl.innerText = `${(currentLikes + 1).toLocaleString()} likes`;
-            }
-        }
-
-        // Double Tap Animation
-        function handleDoubleTap(id) {
-            const heart = document.getElementById(`heart-${id}`);
-            const post = document.querySelector(`#post-${id} .icon-btn`);
+            overlay.style.display = 'flex';
+            activeImg.src = img;
+            document.getElementById('storyUser').innerText = name;
             
-            heart.classList.add('heart-animate');
-            setTimeout(() => heart.classList.remove('heart-animate'), 800);
-            
-            if (!post.classList.contains('liked')) {
-                toggleLike(post, id);
-            }
+            // Animation for Progress Bar
+            pBar.style.width = '0%';
+            let width = 0;
+            clearInterval(storyTimer);
+            storyTimer = setInterval(() => {
+                if (width >= 100) {
+                    closeStory();
+                } else {
+                    width++;
+                    pBar.style.width = width + '%';
+                }
+            }, 30); // Story lasts 3 seconds
         }
 
-        // Modal Controls
-        function openModal(src) {
-            const modal = document.getElementById('mediaModal');
-            const modalImg = document.getElementById('modalImg');
-            modalImg.src = src;
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Stop scroll
+        function closeStory() {
+            document.getElementById('storyOverlay').style.display = 'none';
+            clearInterval(storyTimer);
         }
 
-        function closeModal() {
-            document.getElementById('mediaModal').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Resume scroll
-        }
-
-        // Start the app
-        initApp();
     </script>
 </body>
 </html>
