@@ -4,195 +4,218 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="NIRDIST.gif">
-    <title>Nirdist Poudel | Portfolio</title>
+    <title>Nirdist | Feed</title>
     <style>
         :root {
-            --bg-color: #050505;
-            --card-bg: #111;
-            --accent-color: #3498db;
-            --text-main: #ffffff;
-            --text-dim: #a0a0a0;
+            --bg: #000000;
+            --card-bg: #000000;
+            --border: #262626;
+            --text: #ffffff;
+            --text-dim: #a8a8a8;
+            --accent: #0095f6;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Inter', -apple-system, sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 70px; /* Space for bottom nav */
         }
 
-        /* Glassmorphism Header */
-        header {
+        /* Top Navigation */
+        nav {
+            width: 100%;
+            max-width: 500px;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
             position: sticky;
             top: 0;
-            z-index: 1000;
-            padding: 1.5rem;
-            text-align: center;
-            background: rgba(5, 5, 5, 0.8);
+            background: rgba(0,0,0,0.9);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid #222;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
         }
 
-        header h1 {
-            font-size: 1.5rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            background: linear-gradient(to right, #fff, #666);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .logo { font-weight: bold; font-size: 1.4rem; letter-spacing: -1px; }
 
-        /* Hero Section */
-        .hero {
-            padding: 60px 20px;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero p {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-        }
-
-        /* Main Responsive Grid */
-        .main-container {
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-        }
-
-        /* Card Styling */
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #222;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: #444;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        .card img {
+        /* Stories Bar */
+        .stories-container {
             width: 100%;
-            height: 350px;
-            object-fit: cover;
-            display: block;
-            filter: grayscale(20%);
-            transition: filter 0.3s ease;
-        }
-
-        .card:hover img {
-            filter: grayscale(0%);
-        }
-
-        /* Caption Styling */
-        .card-info {
+            max-width: 500px;
+            display: flex;
+            gap: 15px;
             padding: 15px;
-            background: var(--card-bg);
+            overflow-x: auto;
+            border-bottom: 1px solid var(--border);
+        }
+        .stories-container::-webkit-scrollbar { display: none; }
+
+        .story-circle {
+            min-width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 2px solid #d62976;
+            padding: 2px;
+        }
+        .story-circle img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #222;
         }
 
-        .card-info span {
-            font-size: 0.8rem;
-            color: var(--accent-color);
-            text-transform: uppercase;
-            font-weight: bold;
+        /* The Feed */
+        .feed {
+            width: 100%;
+            max-width: 500px;
         }
 
-        /* Footer */
-        footer {
-            padding: 50px;
-            text-align: center;
-            color: var(--text-dim);
+        .post {
+            width: 100%;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 10px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            gap: 10px;
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .username { font-weight: 600; font-size: 0.9rem; }
+
+        .post-image {
+            width: 100%;
+            min-height: 300px;
+            max-height: 600px;
+            object-fit: contain;
+            background: #0a0a0a;
+        }
+
+        .post-actions {
+            padding: 12px;
+            display: flex;
+            gap: 15px;
+            font-size: 1.4rem;
+        }
+        .action-btn { cursor: pointer; transition: opacity 0.2s; }
+        .action-btn:hover { opacity: 0.7; }
+
+        .post-content {
+            padding: 0 12px 12px 12px;
             font-size: 0.9rem;
-            border-top: 1px solid #222;
-            margin-top: 50px;
         }
+        .likes { font-weight: 600; margin-bottom: 5px; display: block; }
+        .caption { line-height: 1.4; }
+        .caption b { margin-right: 5px; }
+        .time { color: var(--text-dim); font-size: 0.75rem; margin-top: 8px; text-transform: uppercase; }
 
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050505;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 10px;
+        /* Bottom Nav (Mobile Style) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 500px;
+            height: 50px;
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 1.5rem;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Poudel</h1>
-    </header>
+    <nav>
+        <div class="logo">NIRDIST</div>
+        <div class="nav-icons">❤️ ✉️</div>
+    </nav>
 
-    <section class="hero">
-        <p>Visual Gallery & Creative Showcase</p>
-    </section>
+    <div class="stories-container">
+        <div class="story-circle"><img src="NIRDIST.gif"></div>
+        <div class="story-circle"><img src="go2.gif"></div>
+        <div class="story-circle"><img src="go3.gif"></div>
+        <div class="story-circle"><img src="so.gif"></div>
+        <div class="story-circle"><img src="NIRDIST.png"></div>
+    </div>
 
-    <main class="main-container">
-        <div class="card">
-            <img src="NIRDIST.png" alt="Nirdist App Showcase" loading="lazy">
-            <div class="card-info">
-                <span>Featured Project</span>
-                <p>Nirdist App Interface</p>
+    <main class="feed">
+        
+        <article class="post">
+            <div class="post-header">
+                <img src="NIRDIST.gif" class="user-avatar">
+                <span class="username">nirdist_poudel</span>
             </div>
-        </div>
-
-        <div class="card">
-            <img src="NIRDIST.gif" alt="Animated UI" loading="lazy">
-            <div class="card-info">
-                <span>Animation</span>
-                <p>Core System Interaction</p>
+            <img src="NIRDIST.png" class="post-image" alt="Post">
+            <div class="post-actions">
+                <span>🤍</span> <span>💬</span> <span>✈️</span>
             </div>
-        </div>
-
-        <div class="card">
-            <img src="so.gif" alt="Visual Asset" loading="lazy">
-            <div class="card-info">
-                <span>Asset</span>
-                <p>Dynamic Element 01</p>
+            <div class="post-content">
+                <span class="likes">1,240 likes</span>
+                <p class="caption"><b>nirdist_poudel</b> Launching the new system dashboard today. 🚀 #BIT #DevLife</p>
+                <p class="time">2 hours ago</p>
             </div>
-        </div>
+        </article>
 
-        <div class="card">
-            <img src="go3.gif" alt="Visual Asset" loading="lazy">
-            <div class="card-info">
-                <span>Asset</span>
-                <p>Dynamic Element 02</p>
+        <article class="post">
+            <div class="post-header">
+                <img src="NIRDIST.gif" class="user-avatar">
+                <span class="username">nirdist_poudel</span>
             </div>
-        </div>
-
-        <div class="card">
-            <img src="ar.png" alt="Collaborative View" loading="lazy">
-            <div class="card-info">
-                <span>View</span>
-                <p>Perspective Module</p>
+            <img src="so.gif" class="post-image" alt="Post">
+            <div class="post-actions">
+                <span>❤️</span> <span>💬</span> <span>✈️</span>
             </div>
-        </div>
+            <div class="post-content">
+                <span class="likes">850 likes</span>
+                <p class="caption"><b>nirdist_poudel</b> Visualizing the core assets. Everything is coming together.</p>
+                <p class="time">5 hours ago</p>
+            </div>
+        </article>
 
-        </main>
+        <article class="post">
+            <div class="post-header">
+                <img src="NIRDIST.gif" class="user-avatar">
+                <span class="username">arbind_dev</span>
+            </div>
+            <img src="ar.png" class="post-image" alt="Post">
+            <div class="post-actions">
+                <span>🤍</span> <span>💬</span> <span>✈️</span>
+            </div>
+            <div class="post-content">
+                <span class="likes">512 likes</span>
+                <p class="caption"><b>arbind_dev</b> Collaboration is key. Working on the latest site architecture.</p>
+                <p class="time">Yesterday</p>
+            </div>
+        </article>
 
-    <footer>
-        <p>&copy; 2026 Nirdist Poudel. Built with Precision.</p>
-    </footer>
+    </main>
+
+    <div class="bottom-nav">
+        <span>🏠</span>
+        <span>🔍</span>
+        <span>➕</span>
+        <span>🎬</span>
+        <span>👤</span>
+    </div>
 
 </body>
 </html>
